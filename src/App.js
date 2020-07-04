@@ -4,7 +4,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,6 +18,9 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Box from "@material-ui/core/Box";
 
 import "./styles.css";
+
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,6 +62,10 @@ const useStyles = makeStyles((theme) => ({
   
 }));
 
+
+
+
+
 const App = () => {
 
   const classes = useStyles();
@@ -82,7 +90,7 @@ const Content = () => {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Login/>
+            <LoginForm/>
           </Route>
 
           <Route path = "/contactExample">
@@ -90,7 +98,7 @@ const Content = () => {
           </Route>
 
           <Route path = "/login">
-            <Login/>
+            <LoginForm/>
           </Route>
 
         </Switch>
@@ -100,13 +108,83 @@ const Content = () => {
   );
 };
 
-const Login = () => {
+const LoginForm = () => {
 
+  const [user, setUser] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log(user);
+    console.log(password);
+
+    // (async () => {
+    //   const rawResponse = await fetch("http://localhost:8090/authenticate", {
+    //     method: 'POST',
+    //      headers: {
+    //       'Accept': 'application/json',
+    //       'Content-Type': 'application/json'
+    //      },
+    //      body : JSON.stringify({"username":user,"password":password})
+    //   });
+    //   const content = await rawResponse.json();
+    //   console.log(content);
+
+    // })();
+
+    fetch("http://localhost:8090/authenticate",{
+ 
+      method : "POST",
+      headers : {
+        'Content-Type': 'application/json',
+        
+      },
+      body : JSON.stringify({"username":user,"password":password})
+
+    })
+    .then((response) => response.json())
+    .then(data => {
+      if (data.message) {
+        // Here you should have logic to handle invalid login credentials.
+        // This assumes your Rails API will return a JSON object with a key of
+        // 'message' if there is an error
+      } else {
+        localStorage.setItem("token", data.token)
+        // dispatch(loginUser(data.user))
+        console.log(data.token);
+      }
+    })
+    
+  }
+
+
+ 
   return (
-    <div>
-      login
+    <div className="Login">
+      <form onSubmit={handleSubmit}>
+        <label>Username</label>
+        <input
+          name='username'
+          placeholder='Username'
+          value={user}
+          onChange={e => setUser(e.target.value)}
+          /><br/>
+
+        <label>Password</label>
+        <input
+          type='password'
+          name='password'
+          placeholder='Password'
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          /><br/>
+
+        <input type='submit'/>
+           
+      </form>
     </div>
-  );
+   );
+   
 };
 
 const Contacts = () => {
