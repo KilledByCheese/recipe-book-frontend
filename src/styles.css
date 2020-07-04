@@ -26,6 +26,40 @@
     background: linear-gradient(to bottom right, #404040, #4d4d4d);
   }
 
+  .login-input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  .login-button {
+    background-color: #4ddbff;
+    color: black;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .login-button:hover {
+    opacity: 0.8;
+  }
+
+  .loginForm {
+    display : flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 20px;
+    color : #00a3cc;
+    font-family: sans-serif;
+    height: 69vh;
+  }
 
 
 

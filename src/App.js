@@ -1,13 +1,16 @@
 import React from "react";
 
 import {
-  BrowserRouter as Router,
+  Router,
   Switch,
   Route,
   Link,
   Redirect,
   useHistory,
+  
 } from "react-router-dom";
+
+import history from './history';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from "@material-ui/core/AppBar";
@@ -63,18 +66,34 @@ const useStyles = makeStyles((theme) => ({
   
 }));
 
-
-
-
-
 const App = () => {
   // localStorage.removeItem("token");
 //TODO: check if token is present - validate token
 //If token is valid redirect to RecipeList
 //If token is invalid redirect to login
-
-
   const classes = useStyles();
+  
+  // const history = createBrowserHistory(); 
+    
+    if("token" in localStorage) {
+      fetch("http://localhost:8090/isTokenValid",{
+  
+        method : "POST",
+        headers : {
+          'Authorization':'Bearer '+localStorage.getItem("token"),
+        },
+      })
+      .then(function(response) {
+        if(response.status === 401) 
+        {
+          // console.log("Need relogin token invalid");
+          history.push("/login");
+        }
+      });
+    } else {
+      // console.log("Need relogin no token");
+      history.push("/login");
+    }  
 
   return(
     <div>
@@ -90,17 +109,12 @@ const App = () => {
 const Content = () => {
   const classes = useStyles();
 
-  const history = useHistory();
+  
 
-  // if(!("token" in localStorage)) {
-    
-  //   history.push("/login");
-
-  // } else {
     return (
       <div className = {classes.content}>
   
-        <Router>
+        <Router history={history}>
           <Switch>
             <Route exact path="/">
               <LoginForm/>
@@ -119,17 +133,19 @@ const Content = () => {
   
       </div>
     );
-  // }
+ 
 
  
 };
 
 const LoginForm = () => {
 
+  const classes = useStyles();
+
   const [user, setUser] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const history = useHistory();
+  // const history = useHistory();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -147,6 +163,7 @@ const LoginForm = () => {
     })
     .then((response) => response.json())
     .then(data => {
+      console.log(data);
       if (data.message) {
         // Here you should have logic to handle invalid login credentials.
         // This assumes your Rails API will return a JSON object with a key of
@@ -157,21 +174,20 @@ const LoginForm = () => {
         // dispatch(loginUser(data.user))
         history.push("/contactExample");
       }
-    })
+    });
     
   }
-
-
  
   return (
-    <div className="Login">
+    <div className="loginForm">
       <form onSubmit={handleSubmit}>
         <label>Username</label>
         <input
           name='username'
           placeholder='Username'
           value={user}
-          onChange={e => setUser(e.target.value)}
+          onChange={e => setUser(e.target.value)} 
+          className="login-input"
           /><br/>
 
         <label>Password</label>
@@ -180,10 +196,11 @@ const LoginForm = () => {
           name='password'
           placeholder='Password'
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)} 
+          className="login-input"
           /><br/>
 
-        <input type='submit'/>
+        <input type='submit'className="login-button"/>
            
       </form>
     </div>
