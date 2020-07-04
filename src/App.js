@@ -5,7 +5,8 @@ import {
   Switch,
   Route,
   Link,
-  Redirect
+  Redirect,
+  useHistory,
 } from "react-router-dom";
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -67,6 +68,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 const App = () => {
+  // localStorage.removeItem("token");
+//TODO: check if token is present - validate token
+//If token is valid redirect to RecipeList
+//If token is invalid redirect to login
+
 
   const classes = useStyles();
 
@@ -84,28 +90,38 @@ const App = () => {
 const Content = () => {
   const classes = useStyles();
 
-  return (
-    <div className = {classes.content}>
+  const history = useHistory();
 
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <LoginForm/>
-          </Route>
+  // if(!("token" in localStorage)) {
+    
+  //   history.push("/login");
 
-          <Route path = "/contactExample">
-            <Contacts/>
-          </Route>
+  // } else {
+    return (
+      <div className = {classes.content}>
+  
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <LoginForm/>
+            </Route>
+  
+            <Route path = "/contactExample">
+              <Contacts/>
+            </Route>
+  
+            <Route path = "/login">
+              <LoginForm/>
+            </Route>
+  
+          </Switch>
+        </Router>
+  
+      </div>
+    );
+  // }
 
-          <Route path = "/login">
-            <LoginForm/>
-          </Route>
-
-        </Switch>
-      </Router>
-
-    </div>
-  );
+ 
 };
 
 const LoginForm = () => {
@@ -113,24 +129,11 @@ const LoginForm = () => {
   const [user, setUser] = React.useState("");
   const [password, setPassword] = React.useState("");
 
+  const history = useHistory();
+
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(user);
-    console.log(password);
-
-    // (async () => {
-    //   const rawResponse = await fetch("http://localhost:8090/authenticate", {
-    //     method: 'POST',
-    //      headers: {
-    //       'Accept': 'application/json',
-    //       'Content-Type': 'application/json'
-    //      },
-    //      body : JSON.stringify({"username":user,"password":password})
-    //   });
-    //   const content = await rawResponse.json();
-    //   console.log(content);
-
-    // })();
+    
 
     fetch("http://localhost:8090/authenticate",{
  
@@ -148,10 +151,11 @@ const LoginForm = () => {
         // Here you should have logic to handle invalid login credentials.
         // This assumes your Rails API will return a JSON object with a key of
         // 'message' if there is an error
+        alert("Wrong Credentials");
       } else {
-        localStorage.setItem("token", data.token)
+        localStorage.setItem("token", data.token);
         // dispatch(loginUser(data.user))
-        console.log(data.token);
+        history.push("/contactExample");
       }
     })
     
