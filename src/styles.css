@@ -21,6 +21,11 @@
     margin-bottom: 10px;
   }
 
+  html,
+  body {
+    background: linear-gradient(to bottom right, #404040, #4d4d4d);
+  }
+
 
 
 

@@ -1,5 +1,12 @@
 import React from "react";
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -15,22 +22,38 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  toolbar: {
+  header: {
     flexGrow : 1,
     background : "linear-gradient(to bottom right, #262626, #333333)",
     color : "#00a3cc",
+    textAlign : "center",
   },
   typography : {
   },
   title: {
   },
-  box: {
+  headerbox: {
     flexGrow : 1,
     display : "flex",
     alignItems: "center",
     justifyContent:"center",
     magin:"auto",
   },
+  footer:{
+    flexGrow : 1,
+    background : "linear-gradient(to bottom right, #333333, #262626)",
+    color : "#00a3cc",
+    display : "flex",
+    alignItems: "center",
+    justifyContent:"center",
+    magin:"auto",
+    textAlign : "center",
+  },
+  content:{
+    display : "flex",
+    flexGrow : 1,
+  },
+
 
   
 }));
@@ -39,7 +62,54 @@ const App = () => {
 
   const classes = useStyles();
 
+  return(
+    <div>
+      <Header/>
+      
+      <Content/>
 
+      <Footer/>
+    </div>
+  );
+};
+
+const Content = () => {
+  const classes = useStyles();
+
+  return (
+    <div className = {classes.content}>
+
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Login/>
+          </Route>
+
+          <Route path = "/contactExample">
+            <Contacts/>
+          </Route>
+
+          <Route path = "/login">
+            <Login/>
+          </Route>
+
+        </Switch>
+      </Router>
+
+    </div>
+  );
+};
+
+const Login = () => {
+
+  return (
+    <div>
+      login
+    </div>
+  );
+};
+
+const Contacts = () => {
   const [contacts, setContacts] = React.useState([]);
 
   React.useEffect(() => {
@@ -50,16 +120,8 @@ const App = () => {
       });
   }, []);
 
-  
-
-  
-  
-
   return(
     <div>
-      
-      <Header/>
-
       {contacts.map(contact => (
         <ContactCard
           avatar={contact.picture.large}
@@ -68,15 +130,9 @@ const App = () => {
           age={contact.dob.age}
         />
       ))}
-
-
-      <Footer/>
     </div>
-
-
   );
 };
-
 
 
 const Header = () => {
@@ -84,33 +140,37 @@ const Header = () => {
   return (
 
 <div>
-    <AppBar position="fixed">
-  <Toolbar className = {classes.toolbar}>
+  <AppBar position="fixed">
+    <Toolbar className = {classes.header}>
 
-    <Box className ={classes.box}>
-      <Typography>
-        <h1>KilledByCheese's Recipes</h1>
-        <h3>An awesome collection of delicious recipes ツ </h3>
-      </Typography>  
-    </Box>  
-  </Toolbar>
-</AppBar>
-<Toolbar/>
-<Toolbar/>
-<Toolbar/>
+      <Box className ={classes.headerbox}>
+        <Typography>
+          <h1>KilledByCheese's Recipes</h1>
+          <h3>An awesome collection of delicious recipes ツ </h3>
+        </Typography>  
+      </Box>  
+    </Toolbar>
+  </AppBar>
+  <Toolbar/>
+  <Toolbar/>
+  <Toolbar/>
     
     
       
-    </div>
+</div>
     
   );
 };
 
 const Footer = () => {
+  const classes = useStyles();
   return (
-    <div className="footer">
-      <p>This Recipe Book is a collection of recipes I tried and liked</p>
-      <p>I created the frontend and backend myself to try something new and to challenge myself</p>
+    <div className={classes.footer}>
+      <Typography>
+        <p>This Recipe Book is a collection of recipes I tried and liked</p>
+        <p>I created the frontend and backend myself to try something new and to challenge myself</p>
+      </Typography>
+      
     </div>
   );
 };
