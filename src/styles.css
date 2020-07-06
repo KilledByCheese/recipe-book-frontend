@@ -61,5 +61,50 @@
     height: 69vh;
   }
 
+  .recipe-card{
+    display: flex;
+    flex-grow: 1;
+    background: linear-gradient(to bottom right, #333333, #262626);
+    max-width: 800px;
+    max-height: 300px;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .recipeList {
+   width: 100%;
+   font-family: sans-serif;
+  }
+
+  .recipe-button {
+    background-color: #4ddbff;
+    color: black;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    border: none;
+    cursor: pointer;
+    width: 120px;
+    padding-right: 5px;
+    padding-left: 5px;
+    
+  }
+
+  .recipe-button:hover {
+    opacity: 0.8;
+  }
+
+  .recipe-button-center {
+    display: flex;
+    flex-grow: 1;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    justify-content: center;
+  }
+
 
 
