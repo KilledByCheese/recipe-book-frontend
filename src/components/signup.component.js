@@ -17,7 +17,9 @@ const styles = {
 
 
 
-export default function SignupForm() {
+export default function SignupForm(props) {
+
+  
  
   const { register, handleSubmit, formState:{ errors, isSubmitting } } = useForm({
     mode: "onBlur",

@@ -17,21 +17,20 @@ const styles = {
 
 
 
-export default function SigninForm() {
+export default function SigninForm(props) {
  
   const { register, handleSubmit, formState:{ errors, isSubmitting } } = useForm({
     mode: "onBlur",
   });
   
+
   const onSubmit = (data) => {
     console.log(data);  
-    const payload = {
-        username: data.username,
-        password: data.password
-    }  
+    
     axios.post("/authenticate", data).then(
         res => {
             localStorage.setItem("token", res.data.token);
+            props.setIsLoggedIn(true);
         }
     ).catch(
         err => {
@@ -40,7 +39,13 @@ export default function SigninForm() {
     );
   };
 
+   if(props.isLoggedIn) {
+     return(
+       <Redirect to="/home"></Redirect>
+     );
+   } 
   return(
+
     <div style={styles.container}>
       <h4>Sign in</h4>
       <form onSubmit={handleSubmit(onSubmit)}>
