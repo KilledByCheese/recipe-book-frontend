@@ -1,10 +1,7 @@
 import React from "react";
 
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from "react-bootstrap/Nav";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import FormControl from "react-bootstrap/FormControl";
+import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
+
 
 
 
@@ -22,7 +19,7 @@ export default function MenuBar(props) {
         <div>
             <Navbar bg="dark" variant="dark" expand="lg">
             
-                <Navbar.Brand href="#">KilledByCheese's Recipes</Navbar.Brand>
+                <Navbar.Brand href="/home">KilledByCheese's Recipes</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
     
@@ -47,7 +44,7 @@ export default function MenuBar(props) {
     <div>
         <Navbar bg="dark" variant="dark" expand="lg">
         
-            <Navbar.Brand href="#">KilledByCheese's Recipes</Navbar.Brand>
+            <Navbar.Brand href="/home">KilledByCheese's Recipes</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
 

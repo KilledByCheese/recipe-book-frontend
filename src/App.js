@@ -5,21 +5,28 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import React, { Component } from "react";
 import axios from 'axios';
 
+/**
+ * Routing
+ */
 import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
-
-import MenuBar from "./components/menubar.component";
-
-import SignupForm from "./components/signup.component";
-import SigninForm from "./components/signin.component";
-
-import CategoriesOverview from "./components/categoreis.component";
-import Home from "./components/home.component";
-import Search from "./components/search.component";
-
 import { PrivateRoute } from './components/routing/privateRoute';
 
 
+/**
+ * Authentication
+ */
+import SignupForm from "./components/authentication/signup.component";
+import SigninForm from "./components/authentication/signin.component";
 
+
+/**
+ * UI Elements
+ */
+import MenuBar from "./components/ui.elements/menubar.component";
+
+import CategoriesOverview from "./components/ui.elements/categoreis.component";
+import Home from "./components/ui.elements/home.component";
+import Search from "./components/ui.elements/search.component";
 
 
 export default class App extends Component {
@@ -55,22 +62,25 @@ export default class App extends Component {
   
   render(){
     return( 
+      <div style={{background: "#495057"}}>
         <BrowserRouter>
-            <div className="mainbackground">
+            <div>
                 <MenuBar isLoggedIn={this.state.isLoggedIn}></MenuBar>
                 <Switch>
+
                     <Route exact path ="/login" component={() => <SigninForm setIsLoggedIn={this.setIsLoggedIn} isLoggedIn={this.state.isLoggedIn}/>} />
                     <Route exact path ="/register" component={() => <SignupForm/>} />
 
+                    <PrivateRoute exact path ="/" component={() => <Home/>} />
                     <PrivateRoute exact path ="/home" component={() => <Home/>} />
                     <PrivateRoute exact path ="/search" component={() => <Search/>} />
                     <PrivateRoute exact path ="/categories" component={() => <CategoriesOverview/>} />
                 </Switch>
             </div>
         </BrowserRouter> 
+      </div>
     );
-  }  
-     
+  }    
 
   
 };
