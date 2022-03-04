@@ -16,7 +16,7 @@ export default function Login() {
 
   const { setJwt } = useLoginStore();
 
-  const { register, handleSubmit } = useForm<IFormInput>();
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
     authService
@@ -31,6 +31,7 @@ export default function Login() {
       });
   };
 
+  //TODO Make Form fields required - add validation - show errors
   return (
     <div>
       <Container className={styles.myform}>
@@ -41,8 +42,9 @@ export default function Login() {
             <Form.Control
               type="text"
               placeholder="Your User Name"
-              {...register("userName")}
+              {...register("userName", { required: true })}
             />
+            {errors.userName && <p style={{color:"red"}}>User Name is required</p>}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -50,8 +52,9 @@ export default function Login() {
             <Form.Control
               type="password"
               placeholder="Password"
-              {...register("password")}
+              {...register("password", { required: true })}
             />
+            {errors.password && <p style={{color:"red"}}>Password is required</p>}
           </Form.Group>
 
           <Button variant="primary" type="submit">

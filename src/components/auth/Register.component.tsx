@@ -13,12 +13,13 @@ interface IFormInput {
 
 export default function Register() {
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<IFormInput>();
+  const { register, handleSubmit, formState: { errors }} = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
     authService
       .register(data.userName, data.password, data.email)
       .then((response) => {
+        //TODO show success
         navigate("/login");
       })
       .catch((error) => {
@@ -26,7 +27,7 @@ export default function Register() {
         //TODO fehlermeldung in form anzeigen
       });
   };
-
+//TODO Make Form fields required - add validation - show errors
   return(
     <div>
     <Container className={styles.myform}>
@@ -37,17 +38,26 @@ export default function Register() {
           <Form.Control
             type="text"
             placeholder="Your User Name"
-            {...register("userName")}
+            {...register("userName", { required: true })} 
           />
+          {errors.userName && <p style={{color:"red"}}>User Name is required</p>}
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>User Name</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control
             type="text"
             placeholder="Your User Email"
-            {...register("email")}
+            {...register("email", { required: true, 
+              pattern: {
+                //https://stackoverflow.com/a/46181/6603725
+                value: /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i,
+                message: " - Entered value does not match email format"
+              } 
+            })}
           />
+          {errors.email && <p style={{color:"red"}}>Email is required {errors.email.message}</p>}
+          
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -55,8 +65,9 @@ export default function Register() {
           <Form.Control
             type="password"
             placeholder="Password"
-            {...register("password")}
+            {...register("password", { required: true })}
           />
+          {errors.userName && <p style={{color:"red"}}>password is required</p>}
         </Form.Group>
 
         <Button variant="primary" type="submit">
