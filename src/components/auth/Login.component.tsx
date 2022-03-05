@@ -31,7 +31,6 @@ export default function Login() {
       });
   };
 
-  //TODO Make Form fields required - add validation - show errors
   return (
     <div>
       <Container className={styles.myform}>
